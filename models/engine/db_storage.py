@@ -81,6 +81,17 @@ class DBStorage:
                                expire_on_commit=False)
         self.__session = scoped_session(session)
 
+    def get(self, cls, id):
+        """Retriving an object based on class name and id"""
+        if cls in all_classes.values():
+            return self.__session.query(cls).filter(cls.id == id).first()
+        else:
+            return None;
+
+    def count(self, cls=None):
+        """Retriving number of object in storage"""
+        return len(self.all(cls))
+
     def close(self):
         """Close scoped session
         """

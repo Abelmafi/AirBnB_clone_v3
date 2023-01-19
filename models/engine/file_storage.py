@@ -71,6 +71,18 @@ class FileStorage:
         except FileNotFoundError:
             pass
 
+    def get(self, cls, id):
+        """Retriving object by class and id"""
+        key = cls.__name__ + '.' + id
+        if key in self.__objects:
+            return self.__objects[key]
+        else:
+            return None
+
+    def count(self, cls=None):
+        """Retriving number of onject in storage"""
+        return len(self.all(cls))
+
     def close(self):
         """Reload JSON objects
         """
