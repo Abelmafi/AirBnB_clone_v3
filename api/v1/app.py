@@ -19,6 +19,7 @@ def not_found(error):
     """Custome 404 error handler"""
     return jsonify({'error': 'Not found'}), 404
 
+
 @app.teardown_appcontext
 def teardown(error):
     """..."""
