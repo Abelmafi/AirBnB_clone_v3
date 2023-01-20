@@ -14,6 +14,11 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 
 
+@app_errorhandler(404)
+def not_found(error):
+    """Custome 404 error handler"""
+    return jsonify({'error': 'Not found'}), 404
+
 @app.teardown_appcontext
 def teardown(error):
     """..."""
