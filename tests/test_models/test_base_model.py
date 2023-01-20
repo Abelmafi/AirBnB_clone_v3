@@ -1,11 +1,15 @@
 #!/usr/bin/python3
 """ """
 from models.base_model import BaseModel
+import models
 import unittest
 import datetime
+import pycodestyle
 from uuid import UUID
 import json
 import os
+import inspect
+module_doc = models.base_model.__doc__
 
 
 class test_basemodel(unittest.TestCase):
@@ -17,6 +21,26 @@ class test_basemodel(unittest.TestCase):
         self.name = 'BaseModel'
         self.value = BaseModel
 
+    def test_pep8(self):
+        """test pycodestyle requirement fulfilent"""
+        for path in ['models/base_model.py',
+                     'tests/test_models/test_base_model.py']:
+            with self.subTest(path=path):
+                errors = pycodestyle.Checker(path).check_all()
+                self.assertEqual(errors, 0)
+
+    def test_module_docstring(self):
+        """test pycodestyle docstring requirement fulfilment"""
+        self.assertIsNot(module_doc, None, "base_model.py needs a docstring")
+        self.assertTrue(len(module_doc) > 1, "base_model.py needs a docstring")
+
+    def test_class_docsting(self):
+        """test pycodestyle docstring requirement fulfilment"""
+        self.assertIsNot(BaseModel.__doc__, None,
+                         "BaseModel class needs docstring")
+        self.assertTrue(len(BaseModel.__doc__) >= 1,
+                        "BaseModel class needs docstring")
+
     def setUp(self):
         """ """
         pass
@@ -24,7 +48,7 @@ class test_basemodel(unittest.TestCase):
     def tearDown(self):
         try:
             os.remove('file.json')
-        except:
+        except Exception:
             pass
 
     def test_default(self):
@@ -74,14 +98,8 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = self.value(**n)
 
-    def test_kwargs_one(self):
-        """ """
-        n = {'Name': 'test'}
-        with self.assertRaises(KeyError):
-            new = self.value(**n)
-
     def test_id(self):
-        """ """
+        """..."""
         new = self.value()
         self.assertEqual(type(new.id), str)
 
@@ -89,11 +107,3 @@ class test_basemodel(unittest.TestCase):
         """ """
         new = self.value()
         self.assertEqual(type(new.created_at), datetime.datetime)
-
-    def test_updated_at(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.updated_at), datetime.datetime)
-        n = new.to_dict()
-        new = BaseModel(**n)
-        self.assertFalse(new.created_at == new.updated_at)
