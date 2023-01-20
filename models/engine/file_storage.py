@@ -28,19 +28,16 @@ class FileStorage:
         Return:
             returns a dictionary of __object
         """
-        all_return = {}
-
-        # if cls is valid
-        if cls:
+        if cls is not None:
+            all_return = {}
             if cls.__name__ in self.all_classes:
                 # copy objects of cls to temp dict
                 for key, val in self.__objects.items():
                     if key.split('.')[0] == cls.__name__:
-                        all_return.update({key: val})
-        else:  # if cls is none
-            all_return = self.__objects
+                        all_return[key] = val
+                return all_return
 
-        return all_return
+        return self.__objects
 
     def new(self, obj):
         """sets __object to given obj
