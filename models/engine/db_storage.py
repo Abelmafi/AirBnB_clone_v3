@@ -86,7 +86,7 @@ class DBStorage:
         if cls in all_classes.values():
             return self.__session.query(cls).filter(cls.id == id).first()
         else:
-            return None;
+            return None
 
     def count(self, cls=None):
         """Retriving number of object in storage"""
