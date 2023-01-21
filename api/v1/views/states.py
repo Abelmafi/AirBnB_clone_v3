@@ -49,7 +49,8 @@ def states(state_id=None):
                 body_json = request.get_json()
                 for key, value in body_json.items():
                     if key not in ['created_at', 'updated_at', 'id']:
-                        found_state.setattr(key, value)
+                        found_state.setattr(state_obj, key, value)
+                storage.save()
             else:
                 abort(400, 'Not a JSON')
         else:
