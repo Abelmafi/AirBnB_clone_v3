@@ -13,6 +13,7 @@ def city_place(city_id=None):
     """Creating RESTFul api"""
     from models.city import City
     from models.place import Place
+    from models.user import User
     city_obj = storage.all(City)
     place_obj = storage.all(Place)
     user_obj = storage.all(User)
@@ -20,8 +21,8 @@ def city_place(city_id=None):
     if request.method == 'GET':
         ids = [key.split('.')[1] for key in city_obj]
         if city_id in ids:
-            return [value.to_dict() for value in place_obj.values()
-                    if value.to_dict()['city_id'] == city_id]
+            return jsonify([value.to_dict() for value in place_obj.values()
+                    if value.to_dict()['city_id'] == city_id])
         else:
             abort(404)
 
