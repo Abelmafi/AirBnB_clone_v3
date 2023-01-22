@@ -24,7 +24,7 @@ def states(state_id=None):
                 abort(404)
             else:
                 key = 'State.' + state_id
-                return jsonify(state_obj[key].to_json())
+                return jsonify(state_obj[key].to_dict())
 
     elif request.method == 'POST':
         content_type = request.headers.get('Content-Type')
@@ -64,7 +64,7 @@ def states(state_id=None):
             key = 'State.' + state_id
             storage.delete(state_obj[key])
             storage.save()
-            return ({}), 200
+            return jsonify({}), 200
 
         else:
             abort(404)
