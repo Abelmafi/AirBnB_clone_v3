@@ -54,7 +54,7 @@ def states(state_id=None):
                 found_state = state_obj[keyy]
                 for key, value in body_json.items():
                     if key not in ['created_at', 'updated_at', 'id']:
-                        found_state.setattr(state_obj, key, value)
+                        setattr(found_state, key, value)
                 storage.save()
                 return jsonify(found_state.to_dict()), 200
 
