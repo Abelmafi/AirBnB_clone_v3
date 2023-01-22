@@ -54,7 +54,7 @@ def states(state_id=None):
                     if key not in ['created_at', 'updated_at', 'id']:
                         found_state.setattr(state_obj, key, value)
                 storage.save()
-                return (found_state.to_dict()), 200
+                return jsonify(found_state.to_dict()), 200
 
     elif request.method == 'DELETE':
         key = 'State.' + state_id
