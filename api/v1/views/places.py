@@ -54,7 +54,7 @@ def city_place(city_id=None):
         abort(501)
 
 
-@app_views.route('/places', methods=['GET', 'POST'], strict_slashes=False)
+@app_views.route('/places', methods=['GET'], strict_slashes=False)
 @app_views.route('/places/<place_id>', methods=['GET', 'DELETE', 'PUT'])
 def places(place_id=None):
     """Creates State objects that handles all default RESTFul API"""
