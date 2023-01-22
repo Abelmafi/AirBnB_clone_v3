@@ -2,8 +2,10 @@
 """This is the user class"""
 import models
 from models.base_model import BaseModel, Base
+import sqlalchemy
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
+import hashlib
 
 
 class User(BaseModel, Base):
@@ -30,7 +32,7 @@ class User(BaseModel, Base):
         first_name = ""
         last_name = ""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(dself, *args, **kwargs):
         """initializes user"""
         super().__init__(*args, **kwargs)
         if self.password:
