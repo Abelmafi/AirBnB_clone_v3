@@ -15,19 +15,26 @@ def amenity(amenity_id=None):
     amenity_obj = storage.all(Amenity)
 
     if request.method == 'GET':
-        return jsonify([value.to_dict() for key, value in amenity_obj.items()])
+        if amenity_id:
+            ids = [key.split('.')[1] for key in amenity_obj]
+            if amenity_id not in ids:
+                abort(404)
+            else:
+                key = 'Amenity.' + amenity_id
+                return (amenity_obj[key].to_dict())
+        else:
+            return jsonify([value.to_dict() for key, value in amenity_obj.items()])
 
     elif request.method == 'POST':
         amenity_json = request.get_json()
         if request.is_json:
-            if 'name' in amenity_json:
+            if 'name' not in amenity_json:
+                abort(400)
+            else:
                 new_amenity = Amenity(**amenity_json)
                 storage.new(new_amenity)
                 storage.save()
                 return (new_amenity.to_dict()), 201
-
-            else:
-                abort(400)
         else:
             abort(400, 'Not a JSON')
 
@@ -49,14 +56,16 @@ def amenity(amenity_id=None):
             key = 'Amenity.' + amenity_id
             target_obj = amenity_obj[key]
             amenity_json = request.get_json()
-            if request.is_json:
+            if not request.is_json:
+                abort(400, 'Not a JSON')
+            else:
                 for key, value in amenity_json.items():
                     if key not in ['id', 'created_at', 'updated_at']:
                         setattr(target_obj, key, value)
                 storage.save()
                 return (target_obj.to_dict()), 200
-
-            else:
-                abort(400, 'Not a JSON')
         else:
             abort(404)
+
+    else:
+        abort(501)
