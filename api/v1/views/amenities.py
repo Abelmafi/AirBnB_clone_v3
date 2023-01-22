@@ -23,7 +23,7 @@ def amenity(amenity_id=None):
                 key = 'Amenity.' + amenity_id
                 return (amenity_obj[key].to_dict())
         else:
-            return [value.to_dict() for key, value in amenity_obj.items()]
+            return jsonify([value.to_dict() for value in amenity_obj.values()])
 
     elif request.method == 'POST':
         amenity_json = request.get_json()
