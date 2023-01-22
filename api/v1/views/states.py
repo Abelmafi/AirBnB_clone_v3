@@ -16,7 +16,7 @@ def states(state_id=None):
     state_obj = storage.all(State)
 
     if request.method == 'GET':
-        if state_id is None:
+        if state_id:
             return jsonify([obj.to_dict() for obj in state_obj.values()])
         key = 'State.' + state_id
         try:
@@ -26,35 +26,35 @@ def states(state_id=None):
 
     elif request.method == 'POST':
         content_type = request.headers.get('Content-Type')
-        if content_type == 'application/json':
-            body_json = request.get_json()
-        else:
+        if content_type != 'application/json':
             abort(400, 'Not a JSON')
-
-        if 'name' in body_json:
-            new_state = State(**body_json)
-            storage.new(new_state)
-            storage.save()
-            return jsonify(new_state.to_dict()), 201
         else:
-            abort(400, 'Missing name')
+            body_json = request.get_json()
+            if 'name' not in body_json:
+                abort(400, 'Missing name')
+            else:
+                new_state = State(**body_json)
+                storage.new(new_state)
+                storage.save()
+                return jsonify(new_state.to_dict()), 201
 
     elif request.method == 'PUT':
         ids = [key.split('.')[1] for key in state_obj]
-        if state_id in ids:
+        if state_id not in ids:
+            abort(404)
+        else:
             key = 'State.' + state_id
             found_state = state_obj[key]
             content_type = request.headers.get('Content-Type')
-            if content_type == 'application/json':
+            if content_type != 'application/json':
+                abort(400, 'Not a JSON')
+            else:
                 body_json = request.get_json()
                 for key, value in body_json.items():
                     if key not in ['created_at', 'updated_at', 'id']:
                         found_state.setattr(state_obj, key, value)
                 storage.save()
-            else:
-                abort(400, 'Not a JSON')
-        else:
-            abort(404)
+                return (found_state.to_dict()), 200
 
     elif request.method == 'DELETE':
         key = 'State.' + state_id
@@ -66,3 +66,6 @@ def states(state_id=None):
 
         else:
             abort(404)
+
+    else:
+        abort(501)
