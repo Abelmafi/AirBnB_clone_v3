@@ -16,7 +16,7 @@ def states(state_id=None):
     state_obj = storage.all(State)
 
     if request.method == 'GET':
-        if state_id:
+        if state_id is None:
             return jsonify([obj.to_dict() for obj in state_obj.values()])
         key = 'State.' + state_id
         try:
