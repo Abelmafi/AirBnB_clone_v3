@@ -18,11 +18,13 @@ def states(state_id=None):
     if request.method == 'GET':
         if state_id is None:
             return jsonify([obj.to_dict() for obj in state_obj.values()])
-        key = 'State.' + state_id
-        try:
-            return jsonify(state_obj[key].to_dict())
-        except Exception:
-            abort(404)
+        else:
+            ids = [key.split('.')[1] for key in state_obj]
+            if state_id not in ids:
+                abort(404)
+            else:
+                key = 'State.' + state_id
+                return jsonify(state_obj[key].to_json())
 
     elif request.method == 'POST':
         content_type = request.headers.get('Content-Type')
@@ -43,13 +45,13 @@ def states(state_id=None):
         if state_id not in ids:
             abort(404)
         else:
-            key = 'State.' + state_id
-            found_state = state_obj[key]
             content_type = request.headers.get('Content-Type')
             if content_type != 'application/json':
                 abort(400, 'Not a JSON')
             else:
                 body_json = request.get_json()
+                keyy = 'State.' + state_id
+                found_state = state_obj[keyy]
                 for key, value in body_json.items():
                     if key not in ['created_at', 'updated_at', 'id']:
                         found_state.setattr(state_obj, key, value)
@@ -57,12 +59,12 @@ def states(state_id=None):
                 return jsonify(found_state.to_dict()), 200
 
     elif request.method == 'DELETE':
-        key = 'State.' + state_id
         ids = [val.split('.')[1] for val in state_obj]
         if state_id in ids:
+            key = 'State.' + state_id
             storage.delete(state_obj[key])
             storage.save()
-            return {}, 200
+            return ({}), 200
 
         else:
             abort(404)
