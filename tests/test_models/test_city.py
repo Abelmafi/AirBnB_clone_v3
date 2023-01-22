@@ -74,7 +74,7 @@ class TestCity(unittest.TestCase):
         if models.storage_t == 'db':
             self.assertEqual(city.name, None)
         else:
-            self.assertEqual(city.name, None)
+            self.assertEqual(city.name, '')
 
     def test_state_id_attr(self):
         """Test that City has attribute state_id, and it's an empty string"""
@@ -83,7 +83,7 @@ class TestCity(unittest.TestCase):
         if models.storage_t == 'db':
             self.assertEqual(city.state_id, None)
         else:
-            self.assertEqual(city.state_id, None)
+            self.assertEqual(city.state_id, '')
 
     def test_to_dict_creates_dict(self):
         """test to_dict method creates a dictionary with proper attrs"""

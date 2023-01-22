@@ -74,7 +74,7 @@ class TestAmenity(unittest.TestCase):
         if models.storage_t == 'db':
             self.assertEqual(amenity.name, None)
         else:
-            self.assertNotEqual(amenity.name, "")
+            self.assertEqual(amenity.name, '')
 
     def test_to_dict_creates_dict(self):
         """test to_dict method creates a dictionary with proper attrs"""

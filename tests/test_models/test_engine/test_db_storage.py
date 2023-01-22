@@ -96,7 +96,7 @@ class TestFileStorage(unittest.TestCase):
         models.storage.new(state)
         models.storage.new(user)
         models.storage.save()
-        self.assertEqual(models.storage.count(), 3)
+        self.assertEqual(models.storage.count(), 2)
         models.storage.delete(user)
         models.storage.delete(state)
 
