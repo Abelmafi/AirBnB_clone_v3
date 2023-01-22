@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """This is the place class"""
 import models
 from models.base_model import BaseModel, Base
@@ -44,8 +44,9 @@ class Place(BaseModel, Base):
         @property
         def reviews(self):
             """ getter returns list of reviews """
+            from models.review import Review
             list_of_reviews = []
-            all_reviews = models.strage.all(Review)
+            all_reviews = models.storage.all(Review)
             for review in all_reviews.values():
                 if review.place_id == self.id:
                     list_of_reviews.append(review)
@@ -54,6 +55,7 @@ class Place(BaseModel, Base):
         @property
         def amenities(self):
             """ getter returns list of amenities """
+            from models.amenity import Amenity
             list_of_amenities = []
             all_amenities = models.storage.all(Amenity)
             for key, obj in all_amenities.items():
@@ -64,6 +66,7 @@ class Place(BaseModel, Base):
         @amenities.setter
         def amenities(self, obj=None):
             """Set amenity_ids"""
+            from models.amenity import Amenity
             if type(obj).__name__ == 'Amenity':
                 new_amenity = 'Amenity' + '.' + obj.id
                 self.amenity_ids.append(new_amenity)
