@@ -71,20 +71,6 @@ def places(place_id=None):
         except Exception:
             abort(404)
 
-    elif request.method == 'POST':
-        content_type = request.headers.get('Content-Type')
-        if content_type != 'application/json':
-            abort(400, 'Not a JSON')
-        else:
-            body_json = request.get_json()
-            if 'name' not in body_json:
-                abort(400, 'Missing name')
-            else:
-                new_place = Place(**body_json)
-                storage.new(new_place)
-                storage.save()
-                return jsonify(new_place.to_dict()), 201
-
     elif request.method == 'PUT':
         ids = [key.split('.')[1] for key in place_obj]
         if place_id not in ids:
@@ -112,7 +98,7 @@ def places(place_id=None):
         else:
             storage.delete(place_obj[key])
             storage.save()
-            return {}, 200
+            return jsonify({}), 200
 
     else:
         abort(501)
