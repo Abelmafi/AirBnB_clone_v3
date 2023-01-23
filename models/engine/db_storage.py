@@ -42,8 +42,8 @@ class DBStorage:
 
     def all(self, cls=None):
         """Return: dictionary (<class-name>.<object-id>: <obj>)"""
-        obj_dict = {}
 
+        obj_dict = {}
         if cls:
             for row in self.__session.query(cls).all():
                 obj_dict.update({'{}.{}'.
