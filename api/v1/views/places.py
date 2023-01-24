@@ -11,6 +11,7 @@ from models.user import User
 from models.place import Place
 from models.amenity import Amenity
 
+
 @app_views.route('/places_search',
                  methods=['POST'],
                  strict_slashes=False)
