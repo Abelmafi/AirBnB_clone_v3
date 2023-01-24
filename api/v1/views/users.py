@@ -43,7 +43,7 @@ def users(user_id=None):
     elif request.method == 'DELETE':
         ids = [key.split('.')[1] for key in user_obj]
 
-        if amenity_id in ids:
+        if user_id in ids:
             key = "User." + user_id
             storage.delete(user_obj[key])
             storage.save()
