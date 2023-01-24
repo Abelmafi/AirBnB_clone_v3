@@ -34,7 +34,7 @@ class Place(BaseModel, Base):
         amenity_ids = []
 
         reviews = relationship('Review', backref='place',
-                                cascade="all, delete, delete-orphan")
+                               cascade="all, delete, delete-orphan")
         amenities = relationship('Amenity', backref='place_amenities',
                                  secondary='place_amenity',
                                  viewonly=False)
