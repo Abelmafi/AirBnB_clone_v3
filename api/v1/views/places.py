@@ -32,20 +32,18 @@ def city_place(city_id=None):
             content_type = request.headers.get('Content-Type')
             if content_type == 'application/json':
                 body_json = request.get_json()
-                if 'user_id' not in body_json:
-                    abort(400, 'Missing user_id')
-                elif 'name' not in body_json:
+                if 'name' not in body_json:
                     abort(400, 'Missing name')
+                elif 'user_id' not in body_json:
+                    abort(400, 'Missing user_id')
                 else:
-                    u_ids = [key.split('.')[1] for key in user_obj]
                     if ('User.' + body_json['user_id']) not in user_obj.keys():
                         abort(404)
-                    else:
-                        body_json.update({'city_id': city_id})
-                        new_place = Place(**body_json)
-                        storage.new(new_place)
-                        storage.save()
-                        return (new_place.to_dict()), 201
+                    body_json.update({'city_id': city_id})
+                    new_place = Place(**body_json)
+                    storage.new(new_place)
+                    storage.save()
+                    return (new_place.to_dict()), 201
             else:
                 abort(400, 'Not a JSON')
         else:
