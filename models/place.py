@@ -3,18 +3,16 @@
 import models
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Float, Integer, ForeignKey, Table
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from os import getenv
 
 if models.storage_t == 'db':
     place_amenity = Table('place_amenity', Base.metadata,
                           Column('place_id', String(60),
-                                 ForeignKey('places.id', onupdate='CASCADE',
-                                            ondelete='CASCADE'),
+                                 ForeignKey('places.id'),
                                  primary_key=True),
                           Column('amenity_id', String(60),
-                                 ForeignKey('amenities.id', onupdate='CASCADE',
-                                            ondelete='CASCADE'),
+                                 ForeignKey('amenities.id'),
                                  primary_key=True))
 
 
@@ -35,10 +33,13 @@ class Place(BaseModel, Base):
         longitude = Column(Float, nullable=True)
         amenity_ids = []
 
-        reviews = relationship('Review', backref='place')
+        reviews = relationship('Review', backref='place',
+                                cascade="all, delete, delete-orphan")
         amenities = relationship('Amenity', backref='place_amenities',
                                  secondary='place_amenity',
                                  viewonly=False)
+        __mapper_args__ = {"confirm_deleted_rows": False}
+
     else:
         city_id = ""
         user_id = ""

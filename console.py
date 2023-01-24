@@ -218,11 +218,11 @@ class HBNBCommand(cmd.Cmd):
                     counter += 1
             print(counter)
         except NameError:
-            print(" class doesn't exist ")
+            print("class doesn't exist")
 
     def strip_clean(self, args):
         """strips the argument and return a string of command
-        Args: 
+        Args:
         args: input list of args
         Return:
             returns string of argumetns
@@ -285,6 +285,7 @@ class HBNBCommand(cmd.Cmd):
             return True
         except ValueError:
             return False
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

@@ -20,7 +20,7 @@ def state_city(state_id=None):
         ids = [key.split('.')[1] for key in state_obj]
         if state_id in ids:
             return jsonify([value.to_dict() for value in city_obj.values()
-                    if value.to_dict()['state_id'] == state_id])
+                            if value.to_dict()['state_id'] == state_id])
         else:
             abort(404)
 
@@ -91,6 +91,5 @@ def cities(city_id=None):
             storage.delete(city_obj[key])
             storage.save()
             return jsonify({}), 200
-
     else:
-        abort(501) 
+        abort(501)
