@@ -71,6 +71,7 @@ def places_search():
 
     return jsonify(place_list)
 
+  
 @app_views.route('/cities/<city_id>/places', methods=['GET', 'POST'],
                  strict_slashes=False)
 def city_place(city_id=None):
