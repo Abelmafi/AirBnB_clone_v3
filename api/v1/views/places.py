@@ -22,7 +22,7 @@ def city_place(city_id=None):
         ids = [key.split('.')[1] for key in city_obj]
         if city_id in ids:
             return jsonify([value.to_dict() for value in place_obj.values()
-                    if value.to_dict()['city_id'] == city_id])
+                            if value.to_dict()['city_id'] == city_id])
         else:
             abort(404)
 
